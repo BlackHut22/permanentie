@@ -6,8 +6,8 @@ import java.util.Set;
 public record UserDTO (
         Integer id,
         String username,
-        Optional<Integer> groupId,
-        Optional<Integer> requestGroupId,
+        Integer groupId,
+        Integer requestGroupId,
         Set<Integer> timeslotsIds
 ){}
 

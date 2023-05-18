@@ -23,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,11 +52,6 @@ class PermanentieApplicationTests {
     @Mock
     private TimeslotRepo timeslotRepo;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void contextLoads() {
         user = User.builder().id(1).username("Junior").build();
@@ -69,11 +65,16 @@ class PermanentieApplicationTests {
         UserDTO userDTO = new UserDTOMapper().toDTO(user);
         GroupDTO groupDTO = new GroupDTOMapper().toDTO(group);
 
-        System.out.println(user);
-        System.out.println(group);
+        Timeslot t = Timeslot.builder()
+                .description("t")
+                .startDateTime(LocalDateTime.now())
+                .endDateTime(LocalDateTime.now().plusHours(1))
+                .build();
+
 
         System.out.println(userDTO);
         System.out.println(groupDTO);
+
     }
 
 }

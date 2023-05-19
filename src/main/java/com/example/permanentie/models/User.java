@@ -2,10 +2,7 @@ package com.example.permanentie.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -13,6 +10,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Table(name = "_user")
 public class User {
@@ -45,4 +43,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "timeslot_id"))
     private Set<Timeslot> timeslots;
 
+    public User(String username, Group group, Group requestedGroup, Set<Timeslot> timeslots) {
+    }
 }

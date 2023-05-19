@@ -22,6 +22,8 @@ public class Timeslot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String description;
     @NotNull
     private LocalDateTime startDateTime;
 
@@ -29,18 +31,12 @@ public class Timeslot {
     private LocalDateTime endDateTime;
 
     @NotNull
-    @NotEmpty
-    private String description;
-
-    @NotNull
-    @NotEmpty
     @ManyToOne
     @JoinColumn(name = "rooster_id")
     private Rooster rooster;
 
     @ManyToMany(mappedBy = "timeslots")
     private Set<User> users;
-
 
     @AssertTrue(message = "end-DateTime has to be after start-DateTime")
     private boolean isEndAfterStart() {

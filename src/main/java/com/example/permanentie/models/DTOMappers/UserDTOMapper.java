@@ -1,16 +1,14 @@
-package com.example.permanentie.modelDTOMappers;
+package com.example.permanentie.models.DTOMappers;
 
-import com.example.permanentie.modelDTOs.UserDTO;
+import com.example.permanentie.models.creationDTOs.UserCreationDTO;
+import com.example.permanentie.models.DTOs.UserDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class UserDTOMapper {
 
@@ -23,5 +21,14 @@ public class UserDTOMapper {
                 Optional.ofNullable(user.getRequestGroup()).map(Group::getId).orElse(null),
                 Optional.ofNullable(user.getTimeslots()).stream().flatMap(Set::stream).map(Timeslot::getId).collect(Collectors.toSet())
         );
+    }
+
+    public User toEntity(UserCreationDTO user, Group group, Group requestedGroup, Set<Timeslot> timeslots){
+        return User.builder()
+                .username(user.username())
+                .group(group)
+                .requestGroup(requestedGroup)
+                .timeslots(timeslots)
+                .build();
     }
 }

@@ -1,9 +1,9 @@
 package com.example.permanentie;
 
-import com.example.permanentie.modelDTOMappers.GroupDTOMapper;
-import com.example.permanentie.modelDTOMappers.UserDTOMapper;
-import com.example.permanentie.modelDTOs.GroupDTO;
-import com.example.permanentie.modelDTOs.UserDTO;
+import com.example.permanentie.models.DTOMappers.GroupDTOMapper;
+import com.example.permanentie.models.DTOMappers.UserDTOMapper;
+import com.example.permanentie.models.DTOs.GroupDTO;
+import com.example.permanentie.models.DTOs.UserDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
@@ -16,11 +16,9 @@ import com.example.permanentie.services.GroupService;
 import com.example.permanentie.services.RoosterService;
 import com.example.permanentie.services.TimeslotService;
 import com.example.permanentie.services.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;

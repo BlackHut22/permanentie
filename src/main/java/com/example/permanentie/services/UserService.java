@@ -15,4 +15,8 @@ public class UserService {
         userRepo.save(user);
     }
 
+    public User getUser(Integer userId) {
+        return userRepo.findById(userId).orElseThrow(() -> new MultiException("User not in database"));
+
+    }
 }

@@ -1,9 +1,9 @@
 package com.example.permanentie;
 
-import com.example.permanentie.models.DTOMappers.GroupDTOMapper;
-import com.example.permanentie.models.DTOMappers.UserDTOMapper;
-import com.example.permanentie.models.DTOs.GroupDTO;
-import com.example.permanentie.models.DTOs.UserDTO;
+import com.example.permanentie.DTOMappers.GroupDTOMapper;
+import com.example.permanentie.DTOMappers.UserDTOMapper;
+import com.example.permanentie.DTOs.GroupDTO;
+import com.example.permanentie.DTOs.UserDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;

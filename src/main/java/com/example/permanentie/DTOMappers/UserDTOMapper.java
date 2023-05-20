@@ -1,7 +1,7 @@
-package com.example.permanentie.models.DTOMappers;
+package com.example.permanentie.DTOMappers;
 
-import com.example.permanentie.models.creationDTOs.UserCreationDTO;
-import com.example.permanentie.models.DTOs.UserDTO;
+import com.example.permanentie.DTOs.UserDTO;
+import com.example.permanentie.creationDTOs.UserCreationDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;

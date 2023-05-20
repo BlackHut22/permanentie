@@ -1,7 +1,9 @@
 package com.example.permanentie.services;
 
+import com.example.permanentie.DTOMappers.RoosterDTOMapper;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
+import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.repos.RoosterRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,7 @@ public class RoosterService {
 
     private RoosterRepo roosterRepo;
 
-    public Rooster getRooster(Group group, LocalDate localDate) {
+    public Set<Rooster> getRoostersIncDate(Group group, LocalDate localDate) {
         return roosterRepo.findByGroupAndStartDateLessThanEqualAndEndDateGreaterThanEqual(group, localDate, localDate);
     }
 
@@ -23,4 +25,11 @@ public class RoosterService {
         return roosterRepo.findByGroupAndStartDateGreaterThanEqual(group, LocalDate.now());
     }
 
+    public Rooster getRooster(Integer roosterId) {
+        return roosterRepo.findById(roosterId).orElseThrow(() -> new MultiException("Rooster not in database"));
+    }
+
+    public void save(Rooster rooster) {
+        roosterRepo.save(rooster);
+    }
 }

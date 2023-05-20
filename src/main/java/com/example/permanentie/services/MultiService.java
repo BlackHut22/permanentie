@@ -1,17 +1,25 @@
 package com.example.permanentie.services;
 
 
+import com.example.permanentie.DTOMappers.RoosterDTOMapper;
+import com.example.permanentie.DTOMappers.TimeslotDTOMapper;
+import com.example.permanentie.DTOs.RoosterDTO;
+import com.example.permanentie.DTOs.TimeslotDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;
-import com.example.permanentie.models.creationDTOs.RoosterCreationDTO;
-import com.example.permanentie.models.creationDTOs.TimeslotCreationDTO;
+import com.example.permanentie.creationDTOs.RoosterCreationDTO;
+import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @Service
 public class MultiService {
     private UserService userService;
@@ -19,65 +27,106 @@ public class MultiService {
     private RoosterService roosterService;
     private TimeslotService timeslotService;
 
-    public void isUserInGroup(User user, Group group){
-        if (user.getGroup().equals(group)) throw new MultiException("User not in group");
+    private void isUserInGroup(User user, Group group){
+        if (!user.getGroup().equals(group)) throw new MultiException("User not in group");
     }
 
-    public Set<Rooster> getRoosters(Integer userId, Integer groupId) {
+    private void isRoosterInGroup(Rooster rooster, Group group){
+        if (!rooster.getGroup().equals(group)) throw new MultiException("Rooster not in group");
+    }
+
+    private void isTimeslotInGroup(Timeslot timeslot, Group group){
+        if (!timeslot.getRooster().getGroup().equals(group)) throw new MultiException("Timeslot not in group");
+    }
+
+    public Set<RoosterDTO> getRoosters(Integer userId, Integer groupId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
-        return group.getRoosters();
+        Set<Rooster> roosters = group.getRoosters();
+        return roosters.stream().map(RoosterDTOMapper::toDTO).collect(Collectors.toSet());
     }
 
-    public Rooster getRooster(Integer userId, Integer groupId, LocalDate localDate) {
+    public Set<RoosterDTO> getRoosters(Integer userId, Integer groupId, LocalDate localDate) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
-        return roosterService.getRooster(group, localDate);
+        Set<Rooster> roosters = roosterService.getRoostersIncDate(group, localDate);
+        return roosters.stream().map(RoosterDTOMapper::toDTO).collect(Collectors.toSet());
     }
 
-    public Set<Rooster> getRoostersUpcoming(Integer userId, Integer groupId) {
+    public Set<RoosterDTO> getRoostersUpcoming(Integer userId, Integer groupId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
-        return roosterService.getRoostersUpcoming(group);
+        Set<Rooster> roosters = roosterService.getRoostersUpcoming(group);
+        return roosters.stream().map(RoosterDTOMapper::toDTO).collect(Collectors.toSet());
     }
 
-    public Rooster addRooster(Integer userId, Integer groupId, RoosterCreationDTO roosterCreationDTO) {
+    public RoosterDTO addRooster(Integer userId, Integer groupId, RoosterCreationDTO roosterCreationDTO) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Rooster rooster = RoosterDTOMapper.toEntity(roosterCreationDTO);
+        isRoosterInGroup(rooster, group);
+        roosterService.save(rooster);
+        return RoosterDTOMapper.toDTO(rooster);
     }
 
-    public Set<Timeslot> getTimeslots(Integer userId, Integer groupId, Integer roosterId) {
+    public Set<TimeslotDTO> getTimeslots(Integer userId, Integer groupId, Integer roosterId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Rooster rooster = roosterService.getRooster(roosterId);
+        isRoosterInGroup(rooster, group);
+        Set<Timeslot> timeslots = rooster.getTimeslots();
+        return timeslots.stream().map(TimeslotDTOMapper::toDTO).collect(Collectors.toSet());
     }
 
-    public Timeslot addTimeslot(Integer userId, Integer groupId, TimeslotCreationDTO timeslotCreationDTO) {
+    public TimeslotDTO addTimeslot(Integer userId, Integer groupId, TimeslotCreationDTO timeslotCreationDTO) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Timeslot timeslot = TimeslotDTOMapper.toEntity(timeslotCreationDTO);
+        isTimeslotInGroup(timeslot, group);
+        timeslotService.save(timeslot);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 
-    public Timeslot delTimeslot(Integer userId, Integer groupId, Integer timeslotId) {
+    public TimeslotDTO delTimeslot(Integer userId, Integer groupId, Integer timeslotId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        isTimeslotInGroup(timeslot, group);
+        timeslotService.delete(timeslot);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 
-    public Timeslot addTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {
+    public TimeslotDTO addTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        isTimeslotInGroup(timeslot, group);
+        timeslot.getUsers().add(user);
+        user.getTimeslots().add(timeslot);
+        timeslotService.save(timeslot);
+        userService.save(user);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 
-    public Timeslot delTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {
+    public TimeslotDTO delTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        isTimeslotInGroup(timeslot, group);
+        timeslot.getUsers().remove(user);
+        user.getTimeslots().remove(timeslot);
+        timeslotService.save(timeslot);
+        userService.save(user);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 
 

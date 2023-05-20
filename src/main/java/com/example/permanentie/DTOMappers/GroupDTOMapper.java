@@ -1,7 +1,7 @@
-package com.example.permanentie.models.DTOMappers;
+package com.example.permanentie.DTOMappers;
 
-import com.example.permanentie.models.creationDTOs.GroupCreationDTO;
-import com.example.permanentie.models.DTOs.GroupDTO;
+import com.example.permanentie.DTOs.GroupDTO;
+import com.example.permanentie.creationDTOs.GroupCreationDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.User;
@@ -21,12 +21,10 @@ public class GroupDTOMapper {
         );
     }
 
-    public Group toEntity(GroupCreationDTO group, Set<User> users, Set<User> requestedUsers, Set<Rooster> roosters){
+    public Group toEntity(GroupCreationDTO group, Set<User> users){
         return Group.builder()
                 .groupname(group.groupname())
                 .users(users)
-                .requestedUsers(requestedUsers)
-                .roosters(roosters)
                 .build();
     }
 }

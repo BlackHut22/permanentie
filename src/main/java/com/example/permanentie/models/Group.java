@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "_group")
 public class Group {
@@ -32,5 +32,27 @@ public class Group {
 
     @OneToMany(mappedBy = "group")
     private Set<Rooster> roosters;
+
+    public Group(Integer groupId, String groupname) {
+        this.id = groupId;
+        this.groupname = groupname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Group other = (Group) o;
+        return id != null && id.equals(other.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
 }

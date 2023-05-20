@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Entity
 @Table(name = "_user")
 public class User {
@@ -43,6 +43,21 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "timeslot_id"))
     private Set<Timeslot> timeslots;
 
-    public User(String username, Group group, Group requestedGroup, Set<Timeslot> timeslots) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User other = (User) o;
+        return id != null && id.equals(other.id);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

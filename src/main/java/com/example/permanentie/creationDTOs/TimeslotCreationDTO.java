@@ -1,4 +1,4 @@
-package com.example.permanentie.models.creationDTOs;
+package com.example.permanentie.creationDTOs;
 
 import java.time.LocalDateTime;
 

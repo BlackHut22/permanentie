@@ -1,4 +1,4 @@
-package com.example.permanentie.models.creationDTOs;
+package com.example.permanentie.creationDTOs;
 
 public record UserCreationDTO(
         String username

@@ -1,7 +1,7 @@
-package com.example.permanentie.models.DTOMappers;
+package com.example.permanentie.DTOMappers;
 
-import com.example.permanentie.models.creationDTOs.RoosterCreationDTO;
-import com.example.permanentie.models.DTOs.RoosterDTO;
+import com.example.permanentie.creationDTOs.RoosterCreationDTO;
+import com.example.permanentie.DTOs.RoosterDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class RoosterDTOMapper {
 
-    public RoosterDTO toDTO(Rooster rooster){
+    public static RoosterDTO toDTO(Rooster rooster){
         return new RoosterDTO(
                 rooster.getId(),
                 rooster.getStartDate(),
@@ -22,11 +22,11 @@ public class RoosterDTOMapper {
         );
     }
 
-    public Rooster toEntity(RoosterCreationDTO rooster, Set<Timeslot> timeslots, Group group){
+    public static Rooster toEntity(RoosterCreationDTO rooster){
         return Rooster.builder()
                 .startDate(rooster.startDate())
                 .endDate(rooster.endDate())
-                .timeslots(timeslots)
-                .group(group).build();
+                .group(new Group(rooster.groupId(),""))
+                .build();
     }
 }

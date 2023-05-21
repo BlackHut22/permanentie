@@ -26,7 +26,7 @@ public class RoosterDTOMapper {
         return Rooster.builder()
                 .startDate(rooster.startDate())
                 .endDate(rooster.endDate())
-                .group(new Group(rooster.groupId(),""))
+                .group(new Group(rooster.groupId()))
                 .build();
     }
 }

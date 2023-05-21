@@ -25,19 +25,17 @@ public class Rooster {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDate startDate;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "rooster")
     private Set<Timeslot> timeslots;
 
-    @NotNull
-    @NotEmpty
     @ManyToOne
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "group_id",nullable = false)
     private Group group;
 
     @AssertTrue(message = "end-Date has to be after start-Date")

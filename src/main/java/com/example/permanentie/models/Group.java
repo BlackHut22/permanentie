@@ -1,11 +1,8 @@
 package com.example.permanentie.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,7 +18,7 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
+    @Column(nullable = false)
     private String groupname;
 
     @OneToMany(mappedBy = "group")
@@ -33,9 +30,8 @@ public class Group {
     @OneToMany(mappedBy = "group")
     private Set<Rooster> roosters;
 
-    public Group(Integer groupId, String groupname) {
+    public Group(Integer groupId) {
         this.id = groupId;
-        this.groupname = groupname;
     }
 
     @Override

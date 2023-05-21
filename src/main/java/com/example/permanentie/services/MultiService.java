@@ -69,7 +69,21 @@ public class MultiService {
         isUserInGroup(user, group);
         Rooster rooster = RoosterDTOMapper.toEntity(roosterCreationDTO);
         isRoosterInGroup(rooster, group);
+        group.getRoosters().add(rooster);
         roosterService.save(rooster);
+        groupService.save(group);
+        return RoosterDTOMapper.toDTO(rooster);
+    }
+
+    public RoosterDTO delRooster(Integer userId, Integer groupId, Integer roosterId) {
+        User user = userService.getUser(userId);
+        Group group = groupService.getGroup(groupId);
+        isUserInGroup(user, group);
+        Rooster rooster = roosterService.getRooster(roosterId);
+        isRoosterInGroup(rooster, group);
+        group.getRoosters().remove(rooster);
+        roosterService.delete(rooster);
+        groupService.save(group);
         return RoosterDTOMapper.toDTO(rooster);
     }
 
@@ -87,9 +101,12 @@ public class MultiService {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
+        Rooster rooster = roosterService.getRooster(timeslotCreationDTO.roosterId());
+        isRoosterInGroup(rooster, group);
         Timeslot timeslot = TimeslotDTOMapper.toEntity(timeslotCreationDTO);
-        isTimeslotInGroup(timeslot, group);
+        rooster.getTimeslots().add(timeslot);
         timeslotService.save(timeslot);
+        roosterService.save(rooster);
         return TimeslotDTOMapper.toDTO(timeslot);
     }
 
@@ -98,9 +115,12 @@ public class MultiService {
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
         Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        TimeslotDTO tDTO = TimeslotDTOMapper.toDTO(timeslot);
         isTimeslotInGroup(timeslot, group);
+        timeslot.getRooster().getTimeslots().remove(timeslot);
         timeslotService.delete(timeslot);
-        return TimeslotDTOMapper.toDTO(timeslot);
+        roosterService.save(timeslot.getRooster());
+        return tDTO;
     }
 
     public TimeslotDTO addTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {

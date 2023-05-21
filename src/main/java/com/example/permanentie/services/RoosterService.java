@@ -32,4 +32,8 @@ public class RoosterService {
     public void save(Rooster rooster) {
         roosterRepo.save(rooster);
     }
+
+    public void delete(Rooster rooster) {
+        roosterRepo.delete(rooster);
+    }
 }

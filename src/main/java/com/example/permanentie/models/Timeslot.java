@@ -25,15 +25,15 @@ public class Timeslot {
     private Integer id;
 
     private String description;
-    @NotNull
+
+    @Column(nullable = false)
     private LocalDateTime startDateTime;
 
-    @NotNull
+    @Column(nullable = false)
     private LocalDateTime endDateTime;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "rooster_id")
+    @JoinColumn(name = "rooster_id",nullable = false)
     private Rooster rooster;
 
     @ManyToMany(mappedBy = "timeslots")

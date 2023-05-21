@@ -44,6 +44,11 @@ public class MultiController {
         return multiService.addRooster(userId, groupId, roosterCreationDTO);
     }
 
+    @DeleteMapping("/roosters/del")
+    public RoosterDTO delRooster(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam Integer roosterId) {
+        return multiService.delRooster(userId, groupId, roosterId);
+    }
+
     @GetMapping("/rooster/timeslots")
     public Set<TimeslotDTO> getTimeslots(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam Integer roosterId) {
         return multiService.getTimeslots(userId, groupId, roosterId);

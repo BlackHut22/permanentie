@@ -1,0 +1,31 @@
+_id: req_cc7c6ddc5a384e0d9e79e88c756c0320
+type: Request
+parentId: wrk_115b7d6df8ea45f6914891ebd575511e
+modified: 1684673378545
+created: 1684613380691
+url: http://localhost:8080/api/timeslot/add?userId=1&groupId=1
+name: addTimeslot
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"description" : "Smorgens koken",
+    	"startDateTime" : "2023-05-22T10:00",
+    	"endDateTime" : "2023-05-26T11:00",
+    	"roosterId" : 1
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+authentication: {}
+metaSortKey: -1684613380691
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

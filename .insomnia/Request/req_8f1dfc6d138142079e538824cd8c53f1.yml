@@ -1,9 +1,9 @@
 _id: req_8f1dfc6d138142079e538824cd8c53f1
 type: Request
 parentId: wrk_115b7d6df8ea45f6914891ebd575511e
-modified: 1684615215189
+modified: 1684673383589
 created: 1684613380187
-url: http://localhost:8080/api/timeslot/del/userId=1&groupId=1&timeslotId=1
+url: http://localhost:8080/api/timeslot/del?userId=1&groupId=1&timeslotId=1
 name: delTimeslot
 description: ""
 method: DELETE

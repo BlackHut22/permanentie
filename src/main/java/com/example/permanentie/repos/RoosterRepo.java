@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface RoosterRepo extends JpaRepository<Rooster, Integer> {
 
-    Set<Rooster> findByGroupAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Group group, LocalDate startDate, LocalDate endDate);
+    Rooster findByGroupAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Group group, LocalDate startDate, LocalDate endDate);
 
     Set<Rooster> findByGroupAndStartDateGreaterThanEqual(Group group, LocalDate localDate);
 }

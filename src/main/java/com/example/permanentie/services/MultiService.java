@@ -12,7 +12,6 @@ import com.example.permanentie.models.User;
 import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -47,12 +46,12 @@ public class MultiService {
         return roosters.stream().map(RoosterDTOMapper::toDTO).collect(Collectors.toSet());
     }
 
-    public Set<RoosterDTO> getRoosters(Integer userId, Integer groupId, LocalDate localDate) {
+    public RoosterDTO getRoosters(Integer userId, Integer groupId, LocalDate localDate) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
-        Set<Rooster> roosters = roosterService.getRoostersIncDate(group, localDate);
-        return roosters.stream().map(RoosterDTOMapper::toDTO).collect(Collectors.toSet());
+        Rooster rooster = roosterService.getRoosterIncDate(group, localDate);
+        return RoosterDTOMapper.toDTO(rooster);
     }
 
     public Set<RoosterDTO> getRoostersUpcoming(Integer userId, Integer groupId) {

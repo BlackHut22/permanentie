@@ -2,15 +2,11 @@ package com.example.permanentie.controllers;
 
 import com.example.permanentie.DTOs.RoosterDTO;
 import com.example.permanentie.DTOs.TimeslotDTO;
-import com.example.permanentie.models.Rooster;
-import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
 import com.example.permanentie.services.MultiException;
 import com.example.permanentie.services.MultiService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +26,7 @@ public class MultiController {
     }
 
     @GetMapping("/roosters/date")
-    public Set<RoosterDTO> getRoostersIncDate(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam LocalDate localDate) {
+    public RoosterDTO getRoostersIncDate(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam LocalDate localDate) {
         return multiService.getRoosters(userId, groupId, localDate);
     }
 

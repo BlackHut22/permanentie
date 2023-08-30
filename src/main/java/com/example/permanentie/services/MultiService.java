@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -149,5 +150,11 @@ public class MultiService {
     }
 
 
-
+    public Map<Integer, String> getUsernames(Integer userId, Integer groupId) {
+        User user = userService.getUser(userId);
+        Group group = groupService.getGroup(groupId);
+        isUserInGroup(user, group);
+        Set<User> users = group.getUsers();
+        return users.stream().collect(Collectors.toMap(User::getId, User::getUsername));
+    }
 }

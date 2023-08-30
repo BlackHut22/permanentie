@@ -17,8 +17,8 @@ public class TimeslotDTOMapper {
                 timeslot.getDescription(),
                 timeslot.getStartDateTime(),
                 timeslot.getEndDateTime(),
-                Optional.ofNullable(timeslot.getRooster()).map(Rooster::getId).orElse(null),
-                Optional.ofNullable(timeslot.getUsers()).orElse(Collections.emptySet()).stream().collect(Collectors.toMap(User::getId, User::getUsername))
+                timeslot.getRooster().getId(),
+                Optional.ofNullable(timeslot.getUsers()).orElse(Collections.emptySet()).stream().map(User::getId).collect(Collectors.toSet())
         );
     }
 

@@ -6,8 +6,8 @@ import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
 
+import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RoosterDTOMapper {
@@ -17,8 +17,8 @@ public class RoosterDTOMapper {
                 rooster.getId(),
                 rooster.getStartDate(),
                 rooster.getEndDate(),
-                Optional.ofNullable(rooster.getTimeslots()).stream().flatMap(Set::stream).map(Timeslot::getId).collect(Collectors.toSet()),
-                Optional.ofNullable(rooster.getGroup()).map(Group::getId).orElse(null)
+                Optional.ofNullable(rooster.getTimeslots()).orElse(Collections.emptySet()).stream().map(Timeslot::getId).collect(Collectors.toSet()),
+                rooster.getGroup().getId()
         );
     }
 

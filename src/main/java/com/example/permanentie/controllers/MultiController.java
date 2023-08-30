@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -19,6 +20,11 @@ import java.util.Set;
 public class MultiController {
 
     private MultiService multiService;
+
+    @GetMapping("/usernames")
+    public Map<Integer, String> getUsernames(@RequestParam Integer userId, @RequestParam Integer groupId) {
+        return multiService.getUsernames(userId, groupId);
+    }
 
     @GetMapping("/roosters")
     public Set<RoosterDTO> getRoosters(@RequestParam Integer userId, @RequestParam Integer groupId) {

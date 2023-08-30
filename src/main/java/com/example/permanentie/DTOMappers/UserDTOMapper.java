@@ -6,6 +6,7 @@ import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class UserDTOMapper {
                 user.getUsername(),
                 Optional.ofNullable(user.getGroup()).map(Group::getId).orElse(null),
                 Optional.ofNullable(user.getRequestGroup()).map(Group::getId).orElse(null),
-                Optional.ofNullable(user.getTimeslots()).stream().flatMap(Set::stream).map(Timeslot::getId).collect(Collectors.toSet())
+                Optional.ofNullable(user.getTimeslots()).orElse(Collections.emptySet()).stream().map(Timeslot::getId).collect(Collectors.toSet())
         );
     }
 

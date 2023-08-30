@@ -1,7 +1,7 @@
 package com.example.permanentie.DTOs;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Set;
 
 public record TimeslotDTO (
         Integer id,
@@ -9,5 +9,5 @@ public record TimeslotDTO (
         LocalDateTime startDateTime,
         LocalDateTime endDateTime,
         Integer roosterId,
-        Map<Integer,String> users
+        Set<Integer> usersId
 ){}

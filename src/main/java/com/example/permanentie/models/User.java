@@ -1,8 +1,10 @@
 package com.example.permanentie.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.Set;
@@ -16,7 +18,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user_sequence")
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1, initialValue = 200)
     private Integer id;
 
     @Column(nullable = false)
@@ -35,6 +38,9 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Group requestGroup;
+
+    @OneToMany(mappedBy = "chosenUser")
+    private Set<Timeslot> chosenTimeslots;
 
     @ManyToMany
     @JoinTable(

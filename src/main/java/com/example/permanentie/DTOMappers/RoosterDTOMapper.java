@@ -1,7 +1,7 @@
 package com.example.permanentie.DTOMappers;
 
-import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.DTOs.RoosterDTO;
+import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
@@ -22,11 +22,11 @@ public class RoosterDTOMapper {
         );
     }
 
-    public static Rooster toEntity(RoosterCreationDTO rooster){
+    public static Rooster toEntity(RoosterCreationDTO rooster, Group group){
         return Rooster.builder()
                 .startDate(rooster.startDate())
                 .endDate(rooster.endDate())
-                .group(new Group(rooster.groupId()))
+                .group(group)
                 .build();
     }
 }

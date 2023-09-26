@@ -2,8 +2,6 @@ package com.example.permanentie.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,8 +18,10 @@ import java.util.Set;
 @Entity
 @Table(name = "_timeslot")
 public class Timeslot {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "timeslot_sequence")
+    @SequenceGenerator(name = "timeslot_sequence", sequenceName = "timeslot_sequence", allocationSize = 1, initialValue = 200)
     private Integer id;
 
     private String description;
@@ -35,6 +35,10 @@ public class Timeslot {
     @ManyToOne
     @JoinColumn(name = "rooster_id",nullable = false)
     private Rooster rooster;
+
+    @ManyToOne
+    @JoinColumn(name = "chosen_user_id")
+    private User chosenUser;
 
     @ManyToMany(mappedBy = "timeslots")
     private Set<User> users;

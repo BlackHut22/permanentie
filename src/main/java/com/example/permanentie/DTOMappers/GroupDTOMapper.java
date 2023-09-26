@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupDTOMapper {
-    public GroupDTO toDTO(Group group){
+    public static GroupDTO toDTO(Group group){
         return new GroupDTO(
                 group.getId(),
                 group.getGroupname(),
@@ -22,7 +22,7 @@ public class GroupDTOMapper {
         );
     }
 
-    public Group toEntity(GroupCreationDTO group, Set<User> users){
+    public static Group toEntity(GroupCreationDTO group, Set<User> users){
         return Group.builder()
                 .groupname(group.groupname())
                 .users(users)

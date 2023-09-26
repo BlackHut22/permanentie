@@ -2,8 +2,6 @@ package com.example.permanentie.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +20,8 @@ import java.util.Set;
 public class Rooster {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "rooster_sequence")
+    @SequenceGenerator(name = "rooster_sequence", sequenceName = "rooster_sequence", allocationSize = 1, initialValue = 200)
     private Integer id;
 
     @Column(nullable = false)

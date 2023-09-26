@@ -2,6 +2,7 @@ package com.example.permanentie.controllers;
 
 import com.example.permanentie.DTOs.RoosterDTO;
 import com.example.permanentie.DTOs.TimeslotDTO;
+import com.example.permanentie.DTOs.UserDTO;
 import com.example.permanentie.creationDTOs.RoosterCreationDTO;
 import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
 import com.example.permanentie.services.MultiException;
@@ -11,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -22,7 +22,7 @@ public class MultiController {
     private MultiService multiService;
 
     @GetMapping("/usernames")
-    public Map<Integer, String> getUsernames(@RequestParam Integer userId, @RequestParam Integer groupId) {
+    public Set<UserDTO> getUsernames(@RequestParam Integer userId, @RequestParam Integer groupId) {
         return multiService.getUsernames(userId, groupId);
     }
 
@@ -76,6 +76,15 @@ public class MultiController {
         return multiService.delTimeslotUser(userId, groupId, timeslotId);
     }
 
+    @PutMapping("/timeslot/chosenUser/add")
+    public TimeslotDTO addTimeslotChosenUser(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam Integer timeslotId, @RequestParam Integer chosenUserId) {
+        return multiService.addTimeslotChosenUser(userId, groupId,timeslotId, chosenUserId);
+    }
+
+    @DeleteMapping("/timeslot/chosenUser/del")
+    public TimeslotDTO delTimeslotChosenUser(@RequestParam Integer userId, @RequestParam Integer groupId, @RequestParam Integer timeslotId) {
+        return multiService.delTimeslotChosenUser(userId, groupId, timeslotId);
+    }
 
 
 

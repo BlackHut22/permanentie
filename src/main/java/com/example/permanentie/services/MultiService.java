@@ -3,19 +3,20 @@ package com.example.permanentie.services;
 
 import com.example.permanentie.DTOMappers.RoosterDTOMapper;
 import com.example.permanentie.DTOMappers.TimeslotDTOMapper;
+import com.example.permanentie.DTOMappers.UserDTOMapper;
 import com.example.permanentie.DTOs.RoosterDTO;
 import com.example.permanentie.DTOs.TimeslotDTO;
+import com.example.permanentie.DTOs.UserDTO;
+import com.example.permanentie.creationDTOs.RoosterCreationDTO;
+import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
 import com.example.permanentie.models.Group;
 import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;
-import com.example.permanentie.creationDTOs.RoosterCreationDTO;
-import com.example.permanentie.creationDTOs.TimeslotCreationDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class MultiService {
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
         Rooster rooster = roosterService.getRoosterIncDate(group, localDate);
+        if (rooster == null) throw new MultiException("No rooster for date");
         return RoosterDTOMapper.toDTO(rooster);
     }
 
@@ -67,7 +69,7 @@ public class MultiService {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
-        Rooster rooster = RoosterDTOMapper.toEntity(roosterCreationDTO);
+        Rooster rooster = RoosterDTOMapper.toEntity(roosterCreationDTO, group);
         isRoosterInGroup(rooster, group);
         group.getRoosters().add(rooster);
         roosterService.save(rooster);
@@ -115,12 +117,17 @@ public class MultiService {
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
         Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
-        TimeslotDTO tDTO = TimeslotDTOMapper.toDTO(timeslot);
         isTimeslotInGroup(timeslot, group);
-        timeslot.getRooster().getTimeslots().remove(timeslot);
+        timeslot.getUsers().forEach(u -> {
+            u.getChosenTimeslots().remove(timeslot);
+            u.getTimeslots().remove(timeslot);
+            userService.save(u);
+        });
+        Rooster rooster = timeslot.getRooster();
+        rooster.getTimeslots().remove(timeslot);
         timeslotService.delete(timeslot);
-        roosterService.save(timeslot.getRooster());
-        return tDTO;
+        roosterService.save(rooster);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 
     public TimeslotDTO addTimeslotUser(Integer userId, Integer groupId, Integer timeslotId) {
@@ -150,11 +157,42 @@ public class MultiService {
     }
 
 
-    public Map<Integer, String> getUsernames(Integer userId, Integer groupId) {
+    public Set<UserDTO> getUsernames(Integer userId, Integer groupId) {
         User user = userService.getUser(userId);
         Group group = groupService.getGroup(groupId);
         isUserInGroup(user, group);
         Set<User> users = group.getUsers();
-        return users.stream().collect(Collectors.toMap(User::getId, User::getUsername));
+        return users.stream().map(UserDTOMapper::toDTO).collect(Collectors.toSet());
+    }
+
+    public TimeslotDTO addTimeslotChosenUser(Integer userId, Integer groupId, Integer timeslotId, Integer chosenUserId) {
+        User user = userService.getUser(userId);
+        Group group = groupService.getGroup(groupId);
+        isUserInGroup(user, group);
+        User chosenUser = userService.getUser(chosenUserId);
+        isUserInGroup(chosenUser, group);
+        Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        isTimeslotInGroup(timeslot, group);
+        delTimeslotChosenUser(userId, groupId, timeslotId);
+        timeslot.setChosenUser(chosenUser);
+        chosenUser.getChosenTimeslots().add(timeslot);
+        timeslotService.save(timeslot);
+        userService.save(chosenUser);
+        return TimeslotDTOMapper.toDTO(timeslot);
+    }
+
+    public TimeslotDTO delTimeslotChosenUser(Integer userId, Integer groupId, Integer timeslotId) {
+        User user = userService.getUser(userId);
+        Group group = groupService.getGroup(groupId);
+        isUserInGroup(user, group);
+        Timeslot timeslot = timeslotService.getTimeslot(timeslotId);
+        isTimeslotInGroup(timeslot, group);
+        User prevChosenUser = timeslot.getChosenUser();
+        if (prevChosenUser == null) return null;
+        prevChosenUser.getChosenTimeslots().remove(timeslot);
+        timeslot.setChosenUser(null);
+        timeslotService.save(timeslot);
+        userService.save(prevChosenUser);
+        return TimeslotDTOMapper.toDTO(timeslot);
     }
 }

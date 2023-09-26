@@ -6,7 +6,8 @@ import com.example.permanentie.models.Rooster;
 import com.example.permanentie.models.Timeslot;
 import com.example.permanentie.models.User;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TimeslotDTOMapper {
@@ -18,6 +19,7 @@ public class TimeslotDTOMapper {
                 timeslot.getStartDateTime(),
                 timeslot.getEndDateTime(),
                 timeslot.getRooster().getId(),
+                Optional.ofNullable(timeslot.getChosenUser()).map(User::getId).orElse(null),
                 Optional.ofNullable(timeslot.getUsers()).orElse(Collections.emptySet()).stream().map(User::getId).collect(Collectors.toSet())
         );
     }

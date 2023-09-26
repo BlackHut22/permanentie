@@ -60,8 +60,8 @@ class PermanentieApplicationTests {
         userService.save(user);
         groupService.save(group);
 
-        UserDTO userDTO = new UserDTOMapper().toDTO(user);
-        GroupDTO groupDTO = new GroupDTOMapper().toDTO(group);
+        UserDTO userDTO = UserDTOMapper.toDTO(user);
+        GroupDTO groupDTO = GroupDTOMapper.toDTO(group);
 
         Timeslot t = Timeslot.builder()
                 .description("t")

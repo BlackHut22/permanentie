@@ -9,5 +9,6 @@ public record TimeslotDTO (
         LocalDateTime startDateTime,
         LocalDateTime endDateTime,
         Integer roosterId,
+        Integer chosenUserId,
         Set<Integer> usersId
 ){}

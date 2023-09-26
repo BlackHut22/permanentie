@@ -1,7 +1,10 @@
 package com.example.permanentie.models;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.Set;
@@ -15,7 +18,8 @@ import java.util.Set;
 public class Group {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "group_sequence")
+    @SequenceGenerator(name = "group_sequence", sequenceName = "group_sequence", allocationSize = 1, initialValue = 200)
     private Integer id;
 
     @Column(nullable = false)
